@@ -6,6 +6,10 @@ A custom Lovelace card for Home Assistant to display and edit Homematic(IP) Loca
 
 **⚠️ Work in Progress**: This project is under active development and based on the event-based schedule API of Homematic(IP) Local.
 
+![Card Screenshot](images/screenshot.png)
+
+_Example of the schedule card showing a weekly switch schedule_
+
 ## Features
 
 - 📅 **Event-Based Scheduling**: Manage individual schedule events with precise control
@@ -22,6 +26,10 @@ A custom Lovelace card for Home Assistant to display and edit Homematic(IP) Loca
 - **LIGHT**: Lights with dimming and ramp time support
 - **COVER**: Blinds/shutters with position and slat control (LEVEL + LEVEL_2)
 - **VALVE**: Heating valves
+
+![Device Types](images/device-types.png)
+
+_Different device types with category-specific controls_
 
 ## API Structure
 
