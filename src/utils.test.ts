@@ -395,5 +395,86 @@ describe("Utils", () => {
       const errors = validateEvent(event, "SWITCH");
       expect(errors.some((e) => e.field === "LEVEL")).toBe(true);
     });
+
+    it("should detect invalid minute", () => {
+      const event: ScheduleEvent = {
+        WEEKDAY: [WeekdayBit.MONDAY],
+        TARGET_CHANNELS: [1],
+        FIXED_HOUR: 12,
+        FIXED_MINUTE: 60, // Invalid
+        LEVEL: 1,
+        CONDITION: ScheduleCondition.FIXED_TIME,
+        ASTRO_TYPE: AstroType.SUNRISE,
+        ASTRO_OFFSET: 0,
+      };
+
+      const errors = validateEvent(event);
+      expect(errors.some((e) => e.field === "FIXED_MINUTE")).toBe(true);
+    });
+
+    it("should detect invalid astro offset", () => {
+      const event: ScheduleEvent = {
+        WEEKDAY: [WeekdayBit.MONDAY],
+        TARGET_CHANNELS: [1],
+        FIXED_HOUR: 12,
+        FIXED_MINUTE: 0,
+        LEVEL: 1,
+        CONDITION: ScheduleCondition.ASTRO,
+        ASTRO_TYPE: AstroType.SUNRISE,
+        ASTRO_OFFSET: 150, // Invalid: > 120
+      };
+
+      const errors = validateEvent(event);
+      expect(errors.some((e) => e.field === "ASTRO_OFFSET")).toBe(true);
+    });
+
+    it("should detect invalid LIGHT level", () => {
+      const event: ScheduleEvent = {
+        WEEKDAY: [WeekdayBit.MONDAY],
+        TARGET_CHANNELS: [1],
+        FIXED_HOUR: 12,
+        FIXED_MINUTE: 0,
+        LEVEL: 1.5, // Invalid: > 1.0
+        CONDITION: ScheduleCondition.FIXED_TIME,
+        ASTRO_TYPE: AstroType.SUNRISE,
+        ASTRO_OFFSET: 0,
+      };
+
+      const errors = validateEvent(event, "LIGHT");
+      expect(errors.some((e) => e.field === "LEVEL")).toBe(true);
+    });
+
+    it("should detect invalid COVER LEVEL_2", () => {
+      const event: ScheduleEvent = {
+        WEEKDAY: [WeekdayBit.MONDAY],
+        TARGET_CHANNELS: [1],
+        FIXED_HOUR: 12,
+        FIXED_MINUTE: 0,
+        LEVEL: 0.5,
+        LEVEL_2: 1.5, // Invalid: > 1.0
+        CONDITION: ScheduleCondition.FIXED_TIME,
+        ASTRO_TYPE: AstroType.SUNRISE,
+        ASTRO_OFFSET: 0,
+      };
+
+      const errors = validateEvent(event, "COVER");
+      expect(errors.some((e) => e.field === "LEVEL_2")).toBe(true);
+    });
+
+    it("should detect missing target channels", () => {
+      const event: ScheduleEvent = {
+        WEEKDAY: [WeekdayBit.MONDAY],
+        TARGET_CHANNELS: [], // Empty
+        FIXED_HOUR: 12,
+        FIXED_MINUTE: 0,
+        LEVEL: 1,
+        CONDITION: ScheduleCondition.FIXED_TIME,
+        ASTRO_TYPE: AstroType.SUNRISE,
+        ASTRO_OFFSET: 0,
+      };
+
+      const errors = validateEvent(event);
+      expect(errors.some((e) => e.field === "TARGET_CHANNELS")).toBe(true);
+    });
   });
 });
