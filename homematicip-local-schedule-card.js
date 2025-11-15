@@ -25,7 +25,9 @@ function t(t,e,i,s){var r,n=arguments.length,o=n<3?e:null===s?s=Object.getOwnPro
       <div class="event-item ${t.isActive?"active":"inactive"}">
         <div class="event-time">${t.timeString}</div>
         <div class="event-level">${e}</div>
-        ${void 0!==t.LEVEL_2?W`<div class="event-level-2">${this._translations.ui.slat}: ${Math.round(100*t.LEVEL_2)}%</div>`:""}
+        ${void 0!==t.LEVEL_2?W`<div class="event-level-2">
+              ${this._translations.ui.slat}: ${Math.round(100*t.LEVEL_2)}%
+            </div>`:""}
       </div>
     `}render(){if(!this._config)return W``;const t=this._config.name||this._getEntityName(this._activeEntityId||"");return W`
       <ha-card>
