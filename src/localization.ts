@@ -58,6 +58,14 @@ export interface Translations {
     confirmDiscardChanges: string;
     level: string;
     slat: string; // For BLIND LEVEL_2
+    addEvent: string;
+    editEvent: string;
+    time: string;
+    duration: string;
+    state: string;
+    weekdays: string;
+    channels: string;
+    confirmDelete: string;
   };
   // Error messages
   errors: {
@@ -137,6 +145,14 @@ const en: Translations = {
     confirmDiscardChanges: "You have unsaved changes. Do you want to discard them?",
     level: "Level",
     slat: "Slat Position",
+    addEvent: "Add Event",
+    editEvent: "Edit Event",
+    time: "Time",
+    duration: "Duration",
+    state: "State",
+    weekdays: "Weekdays",
+    channels: "Target Channels",
+    confirmDelete: "Are you sure you want to delete this event?",
   },
   errors: {
     failedToChangeProfile: "Failed to change profile: {error}",
@@ -214,6 +230,14 @@ const de: Translations = {
     confirmDiscardChanges: "Sie haben ungespeicherte Änderungen. Möchten Sie diese verwerfen?",
     level: "Stufe",
     slat: "Lamellenposition",
+    addEvent: "Ereignis hinzufügen",
+    editEvent: "Ereignis bearbeiten",
+    time: "Zeit",
+    duration: "Dauer",
+    state: "Zustand",
+    weekdays: "Wochentage",
+    channels: "Zielkanäle",
+    confirmDelete: "Möchten Sie dieses Ereignis wirklich löschen?",
   },
   errors: {
     failedToChangeProfile: "Fehler beim Wechseln des Profils: {error}",
