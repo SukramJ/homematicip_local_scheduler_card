@@ -18,6 +18,7 @@ import {
   formatLevel,
   formatAstroTime,
   validateEvent,
+  isLevelBoolean,
 } from "./utils";
 import {
   WeekdayBit,
@@ -245,6 +246,27 @@ describe("Utils", () => {
       const event = createEmptyEvent("VALVE");
       expect(event.LEVEL).toBe(0.0);
     });
+
+    it("should create empty LOCK event", () => {
+      const event = createEmptyEvent("LOCK");
+      expect(event.LEVEL).toBe(0);
+      expect(event.DURATION_BASE).toBeUndefined();
+      expect(event.RAMP_TIME_BASE).toBeUndefined();
+    });
+
+    it("should have base fields for all categories", () => {
+      const categories = ["SWITCH", "LIGHT", "COVER", "VALVE", "LOCK"] as const;
+      categories.forEach((category) => {
+        const event = createEmptyEvent(category);
+        expect(event.ASTRO_OFFSET).toBe(0);
+        expect(event.ASTRO_TYPE).toBe(AstroType.SUNRISE);
+        expect(event.CONDITION).toBe(ScheduleCondition.FIXED_TIME);
+        expect(event.FIXED_HOUR).toBe(0);
+        expect(event.FIXED_MINUTE).toBe(0);
+        expect(event.TARGET_CHANNELS).toEqual([]);
+        expect(event.WEEKDAY).toEqual([]);
+      });
+    });
   });
 
   describe("backend format conversion", () => {
@@ -303,16 +325,75 @@ describe("Utils", () => {
     });
   });
 
+  describe("isLevelBoolean", () => {
+    it("should return true for SWITCH category", () => {
+      expect(isLevelBoolean(0, "SWITCH")).toBe(true);
+      expect(isLevelBoolean(1, "SWITCH")).toBe(true);
+      expect(isLevelBoolean(0.5, "SWITCH")).toBe(true); // Category determines type
+    });
+
+    it("should return true for LOCK category", () => {
+      expect(isLevelBoolean(0, "LOCK")).toBe(true);
+      expect(isLevelBoolean(1, "LOCK")).toBe(true);
+    });
+
+    it("should return false for LIGHT category", () => {
+      expect(isLevelBoolean(0, "LIGHT")).toBe(false);
+      expect(isLevelBoolean(0.5, "LIGHT")).toBe(false);
+      expect(isLevelBoolean(1, "LIGHT")).toBe(false);
+    });
+
+    it("should return false for COVER category", () => {
+      expect(isLevelBoolean(0, "COVER")).toBe(false);
+      expect(isLevelBoolean(0.5, "COVER")).toBe(false);
+      expect(isLevelBoolean(1, "COVER")).toBe(false);
+    });
+
+    it("should return false for VALVE category", () => {
+      expect(isLevelBoolean(0, "VALVE")).toBe(false);
+      expect(isLevelBoolean(0.5, "VALVE")).toBe(false);
+      expect(isLevelBoolean(1, "VALVE")).toBe(false);
+    });
+
+    it("should return false when no category is provided", () => {
+      expect(isLevelBoolean(0)).toBe(false);
+      expect(isLevelBoolean(1)).toBe(false);
+    });
+  });
+
   describe("formatLevel", () => {
     it("should format SWITCH level as On/Off", () => {
       expect(formatLevel(0, "SWITCH")).toBe("Off");
       expect(formatLevel(1, "SWITCH")).toBe("On");
     });
 
+    it("should format LOCK level as On/Off", () => {
+      expect(formatLevel(0, "LOCK")).toBe("Off");
+      expect(formatLevel(1, "LOCK")).toBe("On");
+    });
+
     it("should format LIGHT level as percentage", () => {
       expect(formatLevel(0, "LIGHT")).toBe("0%");
       expect(formatLevel(0.5, "LIGHT")).toBe("50%");
       expect(formatLevel(1, "LIGHT")).toBe("100%");
+    });
+
+    it("should format COVER level as percentage", () => {
+      expect(formatLevel(0, "COVER")).toBe("0%");
+      expect(formatLevel(0.5, "COVER")).toBe("50%");
+      expect(formatLevel(1, "COVER")).toBe("100%");
+    });
+
+    it("should format VALVE level as percentage", () => {
+      expect(formatLevel(0, "VALVE")).toBe("0%");
+      expect(formatLevel(0.5, "VALVE")).toBe("50%");
+      expect(formatLevel(1, "VALVE")).toBe("100%");
+    });
+
+    it("should format level as percentage when no category provided", () => {
+      expect(formatLevel(0)).toBe("0%");
+      expect(formatLevel(0.5)).toBe("50%");
+      expect(formatLevel(1)).toBe("100%");
     });
   });
 

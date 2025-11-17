@@ -22,6 +22,7 @@ import {
   validateEvent,
   parseTime,
   convertToBackendFormat,
+  isLevelBoolean,
 } from "./utils";
 import { getTranslations, Translations } from "./localization";
 
@@ -484,12 +485,12 @@ export class HomematicScheduleCard extends LitElement {
   private _renderLevelFields() {
     if (!this._editingEvent) return html``;
 
-    const isSwitch = this._category === "SWITCH" || this._category === "LOCK";
+    const isBooleanLevel = isLevelBoolean(this._editingEvent.LEVEL, this._category);
 
     return html`
       <div class="form-group">
         <label>${this._translations.ui.state || "State"}</label>
-        ${isSwitch
+        ${isBooleanLevel
           ? html`
               <select
                 .value=${String(this._editingEvent.LEVEL)}

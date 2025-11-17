@@ -1002,6 +1002,9 @@ function It(t, e) {
   };
   var i, s;
 }
+function Ct(t, e) {
+  return "SWITCH" === e || "LOCK" === e;
+}
 (!(function (t) {
   ((t[(t.SUNRISE = 0)] = "SUNRISE"), (t[(t.SUNSET = 1)] = "SUNSET"));
 })(xt || (xt = {})),
@@ -1018,7 +1021,7 @@ function It(t, e) {
       (t[(t.MIN_10 = 6)] = "MIN_10"),
       (t[(t.HOUR_1 = 7)] = "HOUR_1"));
   })(Dt || (Dt = {})));
-const Ct = {
+const Ot = {
   en: {
     weekdays: {
       short: {
@@ -1176,15 +1179,15 @@ const Ct = {
     warnings: { title: "Validierungswarnungen", noWarnings: "Keine Probleme erkannt" },
   },
 };
-function Ot(t) {
+function Ut(t) {
   const e = t.toLowerCase().split("-")[0];
-  return Ct[e] || Ct.en;
+  return Ot[e] || Ot.en;
 }
-let Ut = class extends at {
+let Lt = class extends at {
   constructor() {
     (super(...arguments),
       (this._isLoading = !1),
-      (this._translations = Ot("en")),
+      (this._translations = Ut("en")),
       (this._showEditor = !1));
   }
   setConfig(t) {
@@ -1221,7 +1224,7 @@ let Ut = class extends at {
       : this.hass?.language
         ? (t = this.hass.language)
         : this.hass?.locale?.language && (t = this.hass.locale.language),
-      (this._translations = Ot(t)));
+      (this._translations = Ut(t)));
   }
   shouldUpdate(t) {
     if (t.has("hass")) {
@@ -1279,7 +1282,7 @@ let Ut = class extends at {
                   (e.RAMP_TIME_BASE = Dt.MS_100),
                   (e.RAMP_TIME_FACTOR = 0),
                   (e.LEVEL = 0))
-                : "VALVE" === t && (e.LEVEL = 0),
+                : ("VALVE" === t || "LOCK" === t) && (e.LEVEL = 0),
           e
         );
       })(this._category),
@@ -1459,14 +1462,9 @@ let Ut = class extends at {
   }
   _renderEvent(t) {
     const e =
-      ((i = t.LEVEL),
-      "SWITCH" === (s = this._category) || "LOCK" === s
-        ? 0 === i
-          ? "Off"
-          : "On"
-        : `${Math.round(100 * i)}%`);
-    var i, s;
-    const n =
+      ((i = t.LEVEL), Ct(0, this._category) ? (0 === i ? "Off" : "On") : `${Math.round(100 * i)}%`);
+    var i;
+    const s =
       void 0 !== t.DURATION_BASE && void 0 !== t.DURATION_FACTOR
         ? (function (t, e) {
             const i = (function (t, e) {
@@ -1495,7 +1493,7 @@ let Ut = class extends at {
     return Y`
       <div class="event-row ${t.isActive ? "active" : "inactive"}">
         <div class="col-time">${t.timeString}</div>
-        <div class="col-duration">${n}</div>
+        <div class="col-duration">${s}</div>
         <div class="col-level">
           ${e}
           ${
@@ -1613,12 +1611,13 @@ let Ut = class extends at {
       : Y``;
   }
   _renderLevelFields() {
-    return this._editingEvent
-      ? Y`
+    if (!this._editingEvent) return Y``;
+    const t = Ct(0, this._category);
+    return Y`
       <div class="form-group">
         <label>${this._translations.ui.state || "State"}</label>
         ${
-          "SWITCH" === this._category || "LOCK" === this._category
+          t
             ? Y`
               <select
                 .value=${String(this._editingEvent.LEVEL)}
@@ -1666,8 +1665,7 @@ let Ut = class extends at {
           `
           : ""
       }
-    `
-      : Y``;
+    `;
   }
   _renderDurationFields() {
     return this._editingEvent
@@ -2052,17 +2050,17 @@ let Ut = class extends at {
     return { entity: "", editable: !0, hour_format: "24" };
   }
 };
-(t([ht({ attribute: !1 })], Ut.prototype, "hass", void 0),
-  t([ut()], Ut.prototype, "_config", void 0),
-  t([ut()], Ut.prototype, "_scheduleData", void 0),
-  t([ut()], Ut.prototype, "_activeEntityId", void 0),
-  t([ut()], Ut.prototype, "_category", void 0),
-  t([ut()], Ut.prototype, "_isLoading", void 0),
-  t([ut()], Ut.prototype, "_translations", void 0),
-  t([ut()], Ut.prototype, "_editingEvent", void 0),
-  t([ut()], Ut.prototype, "_editingGroupNo", void 0),
-  t([ut()], Ut.prototype, "_showEditor", void 0),
-  (Ut = t(
+(t([ht({ attribute: !1 })], Lt.prototype, "hass", void 0),
+  t([ut()], Lt.prototype, "_config", void 0),
+  t([ut()], Lt.prototype, "_scheduleData", void 0),
+  t([ut()], Lt.prototype, "_activeEntityId", void 0),
+  t([ut()], Lt.prototype, "_category", void 0),
+  t([ut()], Lt.prototype, "_isLoading", void 0),
+  t([ut()], Lt.prototype, "_translations", void 0),
+  t([ut()], Lt.prototype, "_editingEvent", void 0),
+  t([ut()], Lt.prototype, "_editingGroupNo", void 0),
+  t([ut()], Lt.prototype, "_showEditor", void 0),
+  (Lt = t(
     [
       ((t) => (e, i) => {
         void 0 !== i
@@ -2072,7 +2070,7 @@ let Ut = class extends at {
           : customElements.define(t, e);
       })("homematicip-local-scheduler-card"),
     ],
-    Ut,
+    Lt,
   )),
   (window.customCards = window.customCards || []),
   window.customCards.push({
@@ -2081,4 +2079,4 @@ let Ut = class extends at {
     description:
       "A custom card for Homematic(IP) Local schedules (switch, valve, cover, light, lock)",
   }));
-export { Ut as HomematicScheduleCard };
+export { Lt as HomematicScheduleCard };

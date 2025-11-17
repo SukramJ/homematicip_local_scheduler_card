@@ -188,6 +188,7 @@ export function scheduleToUIEvents(schedule: ScheduleDict): ScheduleEventUI[] {
 
 /**
  * Create an empty/default schedule event
+ * Based on aiohomematic create_empty_schedule_group
  */
 export function createEmptyEvent(category?: DatapointCategory): ScheduleEvent {
   const baseEvent: ScheduleEvent = {
@@ -201,22 +202,24 @@ export function createEmptyEvent(category?: DatapointCategory): ScheduleEvent {
     LEVEL: 0,
   };
 
-  // Add category-specific fields based on aiohomematic create_empty_schedule_group
+  // Add category-specific fields based on DataPointCategory
   if (category === "COVER") {
     baseEvent.LEVEL = 0.0;
     baseEvent.LEVEL_2 = 0.0;
   } else if (category === "SWITCH") {
     baseEvent.DURATION_BASE = TimeBase.MS_100;
     baseEvent.DURATION_FACTOR = 0;
-    baseEvent.LEVEL = 0;
+    baseEvent.LEVEL = 0; // Binary level (0 or 1)
   } else if (category === "LIGHT") {
     baseEvent.DURATION_BASE = TimeBase.MS_100;
     baseEvent.DURATION_FACTOR = 0;
     baseEvent.RAMP_TIME_BASE = TimeBase.MS_100;
     baseEvent.RAMP_TIME_FACTOR = 0;
-    baseEvent.LEVEL = 0.0;
+    baseEvent.LEVEL = 0.0; // Float level (0.0 - 1.0)
   } else if (category === "VALVE") {
-    baseEvent.LEVEL = 0.0;
+    baseEvent.LEVEL = 0.0; // Float level (0.0 - 1.0)
+  } else if (category === "LOCK") {
+    baseEvent.LEVEL = 0; // Binary level (0 or 1)
   }
 
   return baseEvent;
@@ -287,12 +290,29 @@ export function formatDuration(base: TimeBase, factor: number): string {
 }
 
 /**
- * Format level for display based on category
- * SWITCH/LOCK: "On" / "Off"
- * Others: percentage (0-100%)
+ * Check if LEVEL should be interpreted as a boolean (0/1) rather than a percentage
+ * Based on the datapoint category
+ * - SWITCH and LOCK use boolean levels (0 = Off, 1 = On)
+ * - LIGHT, COVER, and VALVE use float levels (0.0-1.0 as percentage)
+ */
+export function isLevelBoolean(level: number, category?: DatapointCategory): boolean {
+  // Boolean categories: SWITCH and LOCK
+  if (category === "SWITCH" || category === "LOCK") {
+    return true;
+  }
+
+  // All other categories use percentage (float)
+  return false;
+}
+
+/**
+ * Format level for display based on category and value type
+ * - If LEVEL is 0 (integer): Boolean → "On" / "Off"
+ * - If LEVEL is 0.0 (float): Percentage → "0%" to "100%"
  */
 export function formatLevel(level: number, category?: DatapointCategory): string {
-  if (category === "SWITCH" || category === "LOCK") {
+  // Check if should be displayed as boolean
+  if (isLevelBoolean(level, category)) {
     return level === 0 ? "Off" : "On";
   }
 
