@@ -1,4 +1,4 @@
-# HomematicIP Local Scheduler Card - Project Documentation for Claude
+# HomematicIP Local Schedule Card - Project Documentation for Claude
 
 ## Project Overview
 
@@ -15,7 +15,7 @@ This is a **custom Lovelace card** for Home Assistant that displays and edits Ho
 
 ### Repository
 
-- **GitHub**: https://github.com/SukramJ/homematicip_local_scheduler_card
+- **GitHub**: https://github.com/SukramJ/homematicip_local_schedule_card
 - **License**: MIT
 - **Current Version**: 0.1.0
 - **Status**: Work in Progress
@@ -26,7 +26,7 @@ This is a **custom Lovelace card** for Home Assistant that displays and edits Ho
 
 ```
 ├── src/
-│   ├── homematicip-local-scheduler-card.ts  # Main Lit component
+│   ├── homematicip-local-schedule-card.ts  # Main Lit component
 │   ├── types.ts                              # TypeScript type definitions
 │   ├── utils.ts                              # Utility functions (bitwise, validation, formatting)
 │   ├── localization.ts                       # i18n translations (EN, DE)
@@ -39,9 +39,9 @@ This is a **custom Lovelace card** for Home Assistant that displays and edits Ho
 
 ### Main Component
 
-The card is implemented as a single Lit web component: `homematicip-local-scheduler-card`
+The card is implemented as a single Lit web component: `homematicip-local-schedule-card`
 
-**File**: `src/homematicip-local-scheduler-card.ts`
+**File**: `src/homematicip-local-schedule-card.ts`
 
 Key responsibilities:
 
@@ -236,7 +236,7 @@ npm run build         # Production build
 npm run watch         # Watch mode for development
 ```
 
-Output: `dist/homematicip-local-scheduler-card.js` (bundled and minified)
+Output: `dist/homematicip-local-schedule-card.js` (bundled and minified)
 
 ## Common Tasks
 
@@ -244,7 +244,7 @@ Output: `dist/homematicip-local-scheduler-card.js` (bundled and minified)
 
 1. Update types in `src/types.ts` if needed
 2. Add utility functions in `src/utils.ts` with tests
-3. Update the main component in `src/homematicip-local-scheduler-card.ts`
+3. Update the main component in `src/homematicip-local-schedule-card.ts`
 4. Add translations in `src/localization.ts` (EN + DE)
 5. Write tests for all new functionality
 6. Run `npm run validate` before committing

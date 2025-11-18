@@ -1,8 +1,8 @@
 {
-  "name": "homematicip-local-scheduler-card",
+  "name": "homematicip-local-schedule-card",
   "version": "0.1.0",
   "description": "Custom Lovelace card for Homematic schedules (switch, valve, cover, light, lock) - HACS compatible",
-  "main": "dist/homematicip-local-scheduler-card.js",
+  "main": "dist/homematicip-local-schedule-card.js",
   "scripts": {
     "build": "rollup -c",
     "watch": "rollup -c --watch",
@@ -34,12 +34,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/SukramJ/homematicip_local_scheduler_card.git"
+    "url": "https://github.com/SukramJ/homematicip_local_schedule_card.git"
   },
   "bugs": {
-    "url": "https://github.com/SukramJ/homematicip_local_scheduler_card/issues"
+    "url": "https://github.com/SukramJ/homematicip_local_schedule_card/issues"
   },
-  "homepage": "https://github.com/SukramJ/homematicip_local_scheduler_card#readme",
+  "homepage": "https://github.com/SukramJ/homematicip_local_schedule_card#readme",
   "author": "",
   "license": "MIT",
   "dependencies": {

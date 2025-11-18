@@ -77,19 +77,19 @@ Example: `[2, 8, 32]` = Monday, Wednesday, Friday
 1. Make sure [HACS](https://hacs.xyz/) is installed
 2. In HACS, go to "Frontend"
 3. Click the three-dot menu and select "Custom repositories"
-4. Add this repository URL: `https://github.com/SukramJ/homematicip_local_scheduler_card`
+4. Add this repository URL: `https://github.com/SukramJ/homematicip_local_schedule_card`
 5. Select category "Lovelace"
 6. Click "Install"
 7. Restart Home Assistant
 
 ### Manual Installation
 
-1. Download the `homematicip-local-scheduler-card.js` file from the latest release
+1. Download the `homematicip-local-schedule-card.js` file from the latest release
 2. Copy it to your `config/www` folder
 3. Add the resource to your Lovelace dashboard:
    - Go to Settings → Dashboards → Resources
    - Click "Add Resource"
-   - URL: `/local/homematicip-local-scheduler-card.js`
+   - URL: `/local/homematicip-local-schedule-card.js`
    - Resource type: JavaScript Module
 
 ## Configuration
@@ -97,14 +97,14 @@ Example: `[2, 8, 32]` = Monday, Wednesday, Friday
 ### Basic Configuration
 
 ```yaml
-type: custom:homematicip-local-scheduler-card
+type: custom:homematicip-local-schedule-card
 entity: switch.your_device
 ```
 
 ### Multiple Entities
 
 ```yaml
-type: custom:homematicip-local-scheduler-card
+type: custom:homematicip-local-schedule-card
 entities:
   - switch.living_room
   - switch.bedroom
@@ -114,7 +114,7 @@ entities:
 ### Full Configuration
 
 ```yaml
-type: custom:homematicip-local-scheduler-card
+type: custom:homematicip-local-schedule-card
 entity: switch.living_room
 name: Living Room Schedule
 editable: true
@@ -193,7 +193,7 @@ src/
 ├── utils.test.ts      # Utils tests
 ├── localization.ts    # Translations (EN, DE)
 ├── localization.test.ts
-└── homematicip-local-scheduler-card.ts  # Main Lit element
+└── homematicip-local-schedule-card.ts  # Main Lit element
 ```
 
 ## Technical Details
@@ -243,4 +243,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Support
 
-For issues and questions, please use the [GitHub Issues](https://github.com/SukramJ/homematicip_local_scheduler_card/issues) page.
+For issues and questions, please use the [GitHub Issues](https://github.com/SukramJ/homematicip_local_schedule_card/issues) page.
